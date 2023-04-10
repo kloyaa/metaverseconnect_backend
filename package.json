@@ -1,0 +1,27 @@
+{
+  "name": "metaverse-connect",
+  "version": "1.0.0",
+  "description": "An all around blockchain swapping platform",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:local": "nodemon index.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.306.0",
+    "axios": "^1.2.2",
+    "bcrypt": "^5.1.0",
+    "concurrently": "^7.6.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-useragent": "^1.0.15",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.8.1",
+    "uuid": "^9.0.0"
+  },
+  "author": "Koala",
+  "license": "MIT"
+}
