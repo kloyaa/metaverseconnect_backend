@@ -1,6 +1,6 @@
 const express = require("express");
-const { httpMessage } = require("../_core/const/http-messages.const");
 const router = express.Router();
+const { httpMessage } = require("../_core/const/http-messages.const");
 const { jwtAuth } = require("../_core/middleware/jsonwebtoken.middleware");
 const { getWalletType } = require("../_core/utils/wallet.util");
 const { ExternalWallet, InternalWallet } = require("./wallet.model");

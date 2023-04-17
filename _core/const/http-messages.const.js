@@ -70,6 +70,10 @@ const httpMessage = {
         "code": "10303",
         "message": "Oops! It looks like your session has expired or you are not currently authenticated. Please login again to continue.",
     },
+    "10304": {
+        "code": "10304",
+        "message": "Oops! This operation requires administrator privileges to access.",
+    },
     // TRANSACTIONS
     "10404": {
         "code": "10404",

@@ -37,4 +37,22 @@ const jwtAuth = async (req, res, next) => {
     }
 };
 
-module.exports = { jwtAuth };
+const adminAuthentication = async (req, res, next) => {
+    try {
+        const { ADMIN_ACCESS_KEY } = await getAwsSecrets();
+
+        const role = req.headers["role"];
+        const accessKey = req.headers["access-key"];
+
+        if(role === "ADMIN" && accessKey === ADMIN_ACCESS_KEY) next();
+        else return res
+            .status(401)
+            .json(httpMessage[10304]);
+    } catch (error) {
+        console.log(error)
+        return res
+            .status(403)
+            .json(httpMessage[10204]);
+    }
+};
+module.exports = { jwtAuth, adminAuthentication };
