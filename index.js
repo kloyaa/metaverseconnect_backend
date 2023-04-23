@@ -11,21 +11,21 @@ async function runApp() {
         const { DB_CONNECTION_STRING, DB_PORT, WHITELISTED_ORIGIN } = await getAwsSecrets();
         let connectionString = process.env.DB_LOCAL;
         let port = process.env.PORT;
-        let corsOptions = {};
+        let corsOptions = { origin: "*" };
 
         if (process.env.NODE_ENV === "production") {
             connectionString = DB_CONNECTION_STRING;
             port = DB_PORT;
-            corsOptions = {
-                origin: function (origin, callback) {
-                  const origins = WHITELISTED_ORIGIN.split(",");
-                  if (origins.indexOf(origin) !== -1 || !origin) {
-                    callback(null, true);
-                  } else {
-                    callback(new Error('Not allowed by CORS'));
-                  }
-                }
-            };
+            // corsOptions = {
+            //     origin: function (origin, callback) {
+            //       const origins = WHITELISTED_ORIGIN.split(",");
+            //       if (origins.indexOf(origin) !== -1 || !origin) {
+            //         callback(null, true);
+            //       } else {
+            //         callback(new Error('Not allowed by CORS'));
+            //       }
+            //     }
+            // };
         }
 
         mongoose
