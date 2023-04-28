@@ -4,8 +4,10 @@ const { httpMessage } = require("../_core/const/http-messages.const");
 const { jwtAuth } = require("../_core/middleware/jsonwebtoken.middleware");
 const { getWalletType } = require("../_core/utils/wallet.util");
 const { ExternalWallet, InternalWallet } = require("./wallet.model");
+
 const { stringToObjectId, isValidObjectId } = require("../_core/utils/mongodb.util");
 const { isEmpty } = require("../_core/utils/default.util");
+const { User } = require("../auth/auth.model");
 
 router.get("/wallet/all", async (req, res) => {
     const query = req?.user 
@@ -14,7 +16,29 @@ router.get("/wallet/all", async (req, res) => {
 
     const [internal, external] = await Promise.all([
         InternalWallet.find(query),
-        ExternalWallet.find(query),
+        isEmpty(req?.user) 
+            ? User.aggregate([
+                {
+                    $lookup:  {
+                        from: 'externalwallets',
+                        localField: '_id',
+                        foreignField:  'user',
+                        as: 'wallet'
+                    }
+                },
+                {
+                    $project: {
+                        _id: 1,
+                        username: 1,
+                        device: 1,
+                        createdAt: 1,
+                        updatedAt: 1,
+                        wallet:  { $first: "$wallet" },
+                    }
+                }
+
+            ]) 
+            :   ExternalWallet.find(query),
     ]);
     return res.status(200).json({ internal, external });
 });
