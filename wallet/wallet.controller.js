@@ -4,6 +4,7 @@ const { httpMessage } = require("../_core/const/http-messages.const");
 const { jwtAuth } = require("../_core/middleware/jsonwebtoken.middleware");
 const { getWalletType } = require("../_core/utils/wallet.util");
 const { ExternalWallet, InternalWallet } = require("./wallet.model");
+const { stringToObjectId, isValidObjectId } = require("../_core/utils/mongodb.util");
 
 router.get("/wallet/all", async (req, res) => {
     const [internal, external] = await Promise.all([
@@ -54,9 +55,14 @@ router.post("/wallet/external", jwtAuth, async (req, res) => {
 });
 
 router.put("/wallet/:id/validty", async (req, res) => {
-    return await ExternalWallet.findByIdAndUpdate(req.body.id, { 
-        valid: req.body.isValid 
-    });
+    const { id } = req.params;
+    const { isValid } = req.body;
+
+    if(!stringToObjectId(id) || !isValid) {
+        return res.status(200).json(httpMessage[10204]);
+    }
+
+    return await ExternalWallet.findByIdAndUpdate(id, { valid: isValid });
 });
 
 module.exports = router;
