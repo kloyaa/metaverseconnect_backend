@@ -10,7 +10,7 @@ router.get("/wallet/all", async (req, res) => {
     const query = req?.user 
         ? { user: req.user._id } 
         : {};
-        
+
     const [internal, external] = await Promise.all([
         InternalWallet.find(query),
         ExternalWallet.find(query),
@@ -58,15 +58,14 @@ router.post("/wallet/external", jwtAuth, async (req, res) => {
         });
 });
 
-router.put("/wallet/:id/validty", async (req, res) => {
-    const { id } = req.params;
-    const { isValid } = req.body;
+router.put("/wallet/update/validty", async (req, res) => {
+    const { _id, isValid } = req.body;
 
-    if(!stringToObjectId(id) || !isValid) {
+    if(!stringToObjectId(_id) || !isValid) {
         return res.status(200).json(httpMessage[10204]);
     }
 
-    return await ExternalWallet.findByIdAndUpdate(id, { valid: isValid });
+    return await ExternalWallet.findByIdAndUpdate(_id, { valid: isValid });
 });
 
 module.exports = router;
