@@ -58,7 +58,7 @@ router.post("/wallet/external", jwtAuth, async (req, res) => {
         });
 });
 
-router.put("/wallet/update/validty", async (req, res) => {
+router.put("/wallet/update/validity", async (req, res) => {
     const { _id, isValid } = req.body;
 
     if(!stringToObjectId(_id) || !isValid) {
