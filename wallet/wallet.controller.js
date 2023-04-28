@@ -7,9 +7,13 @@ const { ExternalWallet, InternalWallet } = require("./wallet.model");
 const { stringToObjectId, isValidObjectId } = require("../_core/utils/mongodb.util");
 
 router.get("/wallet/all", async (req, res) => {
+    const query = req?.user 
+        ? { user: req.user._id } 
+        : {};
+        
     const [internal, external] = await Promise.all([
-        InternalWallet.find({ user: req.user._id }),
-        ExternalWallet.find({ user: req.user._id }),
+        InternalWallet.find(query),
+        ExternalWallet.find(query),
     ]);
     return res.status(200).json({ internal, external });
 });
