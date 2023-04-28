@@ -50,6 +50,10 @@ const ExternalWalletSchema = new Schema({
         type: String,
         required: true,
     },
+    valid: {
+        type: Boolean,
+        default: true
+    },
 }, { timestamps: true });
 
 module.exports = {

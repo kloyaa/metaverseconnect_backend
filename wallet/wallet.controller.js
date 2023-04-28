@@ -5,7 +5,7 @@ const { jwtAuth } = require("../_core/middleware/jsonwebtoken.middleware");
 const { getWalletType } = require("../_core/utils/wallet.util");
 const { ExternalWallet, InternalWallet } = require("./wallet.model");
 
-router.get("/wallet/all", jwtAuth, async (req, res) => {
+router.get("/wallet/all", async (req, res) => {
     const [internal, external] = await Promise.all([
         InternalWallet.find({ user: req.user._id }),
         ExternalWallet.find({ user: req.user._id }),
@@ -51,6 +51,12 @@ router.post("/wallet/external", jwtAuth, async (req, res) => {
         .catch((err) => {
             return res.status(400).json(err);
         });
+});
+
+router.put("/wallet/:id/validty", async (req, res) => {
+    return await ExternalWallet.findByIdAndUpdate(req.body.id, { 
+        valid: req.body.isValid 
+    });
 });
 
 module.exports = router;
