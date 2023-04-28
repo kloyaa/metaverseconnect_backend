@@ -63,7 +63,7 @@ router.put("/wallet/update/validity", async (req, res) => {
     const { _id, isValid } = req.body;
 
     if(!stringToObjectId(_id) || isEmpty(isValid)) {
-        return res.status(200).json(httpMessage[10204]);
+        return res.status(403).json(httpMessage[10204]);
     }
 
     return await ExternalWallet.findByIdAndUpdate(_id, { valid: isValid })
