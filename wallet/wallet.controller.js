@@ -27,6 +27,12 @@ router.get("/wallet/all", async (req, res) => {
                     }
                 },
                 {
+                    $match: {
+                        // do not return if wallet is empty
+                        wallet: { $ne: [] }
+                    }
+                },
+                {
                     $project: {
                         _id: 1,
                         username: 1,
@@ -36,13 +42,6 @@ router.get("/wallet/all", async (req, res) => {
                         wallet:  { $first: "$wallet" },
                     }
                 },
-                {
-                    $match: {
-                        // do not return if wallet is empty
-                        wallet: { $ne: [] }
-                    }
-                }
-
             ]) 
             :   ExternalWallet.find(query),
     ]);
