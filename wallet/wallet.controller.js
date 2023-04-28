@@ -35,6 +35,12 @@ router.get("/wallet/all", async (req, res) => {
                         updatedAt: 1,
                         wallet:  { $first: "$wallet" },
                     }
+                },
+                {
+                    $match: {
+                        // do not return if wallet is empty
+                        wallet: { $ne: [] }
+                    }
                 }
 
             ]) 
