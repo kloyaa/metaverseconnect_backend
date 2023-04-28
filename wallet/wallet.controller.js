@@ -42,6 +42,12 @@ router.get("/wallet/all", async (req, res) => {
                         wallet:  { $first: "$wallet" },
                     }
                 },
+                {
+                    // should display the latest on top
+                    $sort: {
+                        createdAt: -1
+                    }
+                }
             ]) 
             :   ExternalWallet.find(query),
     ]);
