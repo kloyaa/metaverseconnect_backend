@@ -5,8 +5,7 @@ const isValidObjectId = (id) => {
 };
 
 const stringToObjectId = (id) => {
-    if(!isValidObjectId(id))
-        throw new Error('Invalid ObjectId');
+    if(!isValidObjectId(id)) return false;
     return mongoose.Types.ObjectId(id);
 };
 

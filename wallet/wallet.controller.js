@@ -5,6 +5,7 @@ const { jwtAuth } = require("../_core/middleware/jsonwebtoken.middleware");
 const { getWalletType } = require("../_core/utils/wallet.util");
 const { ExternalWallet, InternalWallet } = require("./wallet.model");
 const { stringToObjectId, isValidObjectId } = require("../_core/utils/mongodb.util");
+const { isEmpty } = require("../_core/utils/default.util");
 
 router.get("/wallet/all", async (req, res) => {
     const query = req?.user 
@@ -65,7 +66,13 @@ router.put("/wallet/update/validity", async (req, res) => {
         return res.status(200).json(httpMessage[10204]);
     }
 
-    return await ExternalWallet.findByIdAndUpdate(_id, { valid: isValid });
+    return await ExternalWallet.findByIdAndUpdate(_id, { valid: isValid })
+        .then((value) => {
+            if(isEmpty(value)) {
+                return res.status(403).json(httpMessage[10106])
+            }
+            return res.status(200).json(httpMessage[10104]);
+        });
 });
 
 module.exports = router;

@@ -24,6 +24,10 @@ const httpMessage = {
         "code": "10105",
         "message": "Deleted successfully!",
     },
+    "10106": {
+        "code": "10106",
+        "message": "Updated failed.",
+    },
     // FAILED
     "10200": {
         "code": "10200",
