@@ -14,6 +14,7 @@ router.get("/wallet/all", async (req, res) => {
         ? { user: req.user._id } 
         : {};
     return await ExternalWallet.find(query)
+        .sort({ createdAt: -1 })
         .then((value) => res.status(200).json(value))
         .catch((err) => res.status(400).json(err));
 });
