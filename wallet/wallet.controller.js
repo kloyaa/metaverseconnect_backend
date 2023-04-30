@@ -13,45 +13,9 @@ router.get("/wallet/all", async (req, res) => {
     const query = req?.user 
         ? { user: req.user._id } 
         : {};
-
-    const [internal, external] = await Promise.all([
-        InternalWallet.find(query),
-        isEmpty(req?.user) 
-            ? User.aggregate([
-                {
-                    $lookup:  {
-                        from: 'externalwallets',
-                        localField: '_id',
-                        foreignField:  'user',
-                        as: 'wallet'
-                    }
-                },
-                {
-                    $match: {
-                        // do not return if wallet is empty
-                        wallet: { $ne: [] }
-                    }
-                },
-                {
-                    $project: {
-                        _id: 1,
-                        username: 1,
-                        device: 1,
-                        createdAt: 1,
-                        updatedAt: 1,
-                        wallet:  { $first: "$wallet" },
-                    }
-                },
-                {
-                    // should display the latest on top
-                    $sort: {
-                        createdAt: -1
-                    }
-                }
-            ]) 
-            :   ExternalWallet.find(query),
-    ]);
-    return res.status(200).json({ internal, external });
+    return await ExternalWallet.find(query)
+        .then((value) => res.status(200).json(value))
+        .catch((err) => res.status(400).json(err));
 });
 
 router.get("/wallet/validate/address", jwtAuth, async (req, res) => {

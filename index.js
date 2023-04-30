@@ -16,6 +16,7 @@ async function runApp() {
         if (process.env.NODE_ENV === "production") {
             connectionString = DB_CONNECTION_STRING;
             port = DB_PORT;
+            console.log(`SERVER IS RUNNING ON ${process.env.NODE_ENV} mode`)
             // corsOptions = {
             //     origin: function (origin, callback) {
             //       const origins = WHITELISTED_ORIGIN.split(",");
